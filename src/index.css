@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #131314;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 250px auto;
+  padding: 30px;
+  background: transparent;
+  border-radius: 10px;
+  box-shadow: rgba(53, 52, 52, 0.25) 0px 54px 55px, rgba(180, 176, 176, 0.12) 0px -12px 30px, rgba(210, 206, 206, 0.12) 0px 4px 6px, rgba(193, 191, 191, 0.17) 0px 12px 13px, rgba(190, 187, 187, 0.09) 0px -3px 5px;
+  text-align: center;
+}
+
+.auth-container h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.auth-headers {
+  text-align: left;
+  margin: 10px 0 2px 5%;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+}
+
+.auth-container input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: transparent;
+  color: rgb(228, 228, 228);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-container input,
+.auth-container input:-webkit-autofill,
+.auth-container input:-webkit-autofill:focus,
+.auth-container input:-webkit-autofill:hover,
+.auth-container input:-webkit-autofill:active {
+  background-color: transparent !important;
+  color: rgb(228, 228, 228) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.579);
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.auth-container input::placeholder {
+  color: rgba(255, 255, 255, 0.766);
+  opacity: 1;
+}
+
+.auth-container button {
+  width: 70%;
+  padding: 12px;
+  background-color: #3f3f40;
+  color: rgb(255, 254, 254);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+  margin: 0 auto;
+}
+
+.auth-container button:hover {
+  background-color: #292828;
+}
+
+.auth-container p {
+  color: white;
+}
+
+.auth-container a {
+  color: #ff0095a1;
+}
+
+.arrow-icon {
+  display: inline-block;
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  opacity: 0.6;
+  margin-left: 4px;
+}
+
+.group:hover .arrow-icon {
+  transform: translateX(4px);
+  opacity: 1;
+}
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fff;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
