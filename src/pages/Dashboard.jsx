@@ -1,10 +1,10 @@
 import React from 'react';
 import '../ui/styles/dashboard.css'
 
-import OverviewCards from '../ui/OverviewCards';
-import TransactionTable from '../ui/TransactionTable';
-import BudgetTracker from '../ui/BudgetTracker';
-import Analytics from '../ui/Analytics';
+import OverviewCards from './navlinksPages/OverviewCards';
+import TransactionTable from './navlinksPages/TransactionTable';
+import BudgetTracker from './navlinksPages/BudgetTracker';
+import Analytics from './navlinksPages/Analytics';
 import Footer from '../ui/Footer';
 
 function Dashboard() {

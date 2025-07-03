@@ -4,13 +4,13 @@ import Login from './components/Auth/Login';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import Threads from './ui/Threads';
-import BudgetTracker from './ui/BudgetTracker';
-import TodoList from './ui/TodoList';
-import Settings from './ui/Settings';
+import BudgetTracker from './pages/navlinksPages/BudgetTracker';
+import TodoList from './pages/navlinksPages/TodoList';
+import Settings from './pages/navlinksPages/Settings';
 import ProtectedRoute from './components/ProtectedRoute';
-import Layout from './ui/Layout';
-import TransactionsTable from './ui/TransactionTable';
-import Analytics from './ui/Analytics';
+import Layout from './pages/navlinksPages/Layout';
+import TransactionsTable from './pages/navlinksPages/TransactionTable';
+import Analytics from './pages/navlinksPages/Analytics';
 
 function App() {
   const token = localStorage.getItem('token');

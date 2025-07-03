@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../ui/Sidebar';
-import './styles/dashboard.css';
+import Sidebar from '../../ui/Sidebar';
+import '../../ui/styles/dashboard.css';
 
 function Layout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
