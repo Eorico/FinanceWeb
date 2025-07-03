@@ -187,7 +187,7 @@ function TodoList() {
       {/* Filters */}
       <div className="todo-controls">
         <div className="search-container">
-          <Search size={20} className="search-icon" />
+          <Search size={20} className="search-icon-todo" />
           <input
             type="text"
             placeholder="Search tasks..."

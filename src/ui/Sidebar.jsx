@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
-  PiggyBank, 
+  DollarSign, 
+  PiggyBank,
   CreditCard, 
   Settings, 
   CheckSquare, 
@@ -41,7 +42,7 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
       <div className="sidebar-header">
         <div className="logo-section">
           <div className="logo-icon">
-            <PiggyBank size={24} />
+            <DollarSign size={24} />
           </div>
           {!isCollapsed && (
             <div className="logo-text">

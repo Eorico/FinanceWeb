@@ -13,23 +13,23 @@
   overflow: hidden;
 }
 
-/* Enhanced Sidebar */
+/* Sidebar */
 .sidebar {
   width: 280px;
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  background: linear-gradient(180deg, #18191a 0%, #060708 100%);
   color: white;
   display: flex;
   flex-direction: column;
   position: relative;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.372);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   flex-shrink: 0;
   z-index: 1000;
 }
 
 .sidebar.collapsed {
-  width: 80px;
+  width: 73px;
 }
 
 /* Sidebar Header */
@@ -54,7 +54,7 @@
 .logo-icon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #f63b92, #1d4ed8);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -125,7 +125,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 12px 10px;
   color: #cbd5e1;
   text-decoration: none;
   border-radius: 12px;
@@ -144,7 +144,7 @@
 
 .nav-link.active {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(29, 78, 216, 0.1));
-  color: #60a5fa;
+  color: #ed60fa;
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
@@ -156,7 +156,7 @@
   transform: translateY(-50%);
   width: 4px;
   height: 24px;
-  background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #f63b92, #1d4ed8);
   border-radius: 0 2px 2px 0;
 }
 
@@ -182,7 +182,7 @@
   transform: translateY(-50%);
   width: 6px;
   height: 6px;
-  background: #3b82f6;
+  background: #ed60fa;
   border-radius: 50%;
   box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
 }
@@ -208,7 +208,7 @@
 .user-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #e7ecea, #6d7e79);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -248,7 +248,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 16px;
+  padding: 12px 10px;
   background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
   border: none;
@@ -299,165 +299,6 @@
   opacity: 0;
   transform: translateX(-10px);
   pointer-events: none;
-}
-
-/* Authentication Styles */
-.auth-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.auth-card {
-  background: white;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  width: 100%;
-  max-width: 400px;
-}
-
-.auth-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.auth-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 8px;
-}
-
-.auth-header p {
-  color: #64748b;
-  font-size: 0.875rem;
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.form-row {
-  display: flex;
-  gap: 16px;
-}
-
-.form-row .form-group {
-  flex: 1;
-}
-
-.auth-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.auth-btn.primary {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  color: white;
-}
-
-.auth-btn.primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-}
-
-.auth-btn.secondary {
-  background: #f1f5f9;
-  color: #475569;
-  border: 1px solid #e2e8f0;
-}
-
-.auth-btn.secondary:hover {
-  background: #e2e8f0;
-}
-
-.auth-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.form-options {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: -8px;
-}
-
-.forgot-link {
-  color: #3b82f6;
-  text-decoration: none;
-  font-size: 0.875rem;
-}
-
-.forgot-link:hover {
-  text-decoration: underline;
-}
-
-.auth-footer {
-  text-align: center;
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid #e2e8f0;
-}
-
-.auth-footer p {
-  color: #64748b;
-  font-size: 0.875rem;
-}
-
-.auth-footer a {
-  color: #3b82f6;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.auth-footer a:hover {
-  text-decoration: underline;
-}
-
-.back-link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #64748b;
-  text-decoration: none;
-  font-size: 0.875rem;
-  justify-content: center;
-}
-
-.back-link:hover {
-  color: #3b82f6;
-}
-
-.success-message {
-  text-align: center;
-  padding: 32px 0;
-}
-
-.success-icon {
-  color: #10b981;
-  margin-bottom: 16px;
-}
-
-.success-message p {
-  color: #64748b;
-  font-size: 0.875rem;
 }
 
 /* Common Section Styles */
@@ -596,7 +437,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #35383d, #afb3bd);
   color: white;
   border: none;
   border-radius: 12px;
@@ -980,11 +821,18 @@
   min-width: 200px;
 }
 
-.search-icon,
-.filter-icon {
+.search-icon {
   position: absolute;
   left: 12px;
   top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.filter-icon {
+  position: absolute;
+  right: 18px;
+  top: 45%;
   transform: translateY(-50%);
   color: #9ca3af;
 }
@@ -1136,6 +984,14 @@
   flex-wrap: wrap;
 }
 
+.search-icon-todo {
+  position: absolute;
+  left: 12px;
+  top: 27%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
 .completion-text {
   font-size: 0.875rem;
   color: #64748b;
@@ -1196,7 +1052,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #35383d, #afb3bd);
   color: white;
   border: none;
   border-radius: 8px;
@@ -2123,13 +1979,16 @@
     flex-direction: column;
     height: auto;
     min-height: 100vh;
+    overflow: visible;
   }
 
   .sidebar {
     width: 100%;
     height: auto;
     max-height: none;
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 1001;
   }
 
   .sidebar.collapsed {
