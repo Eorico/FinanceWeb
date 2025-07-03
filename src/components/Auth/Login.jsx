@@ -33,11 +33,11 @@ function Login()
 
     return(
     <div className="auth-container">
-        <h2>Login</h2>
+        <h2>Finance Pro</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <form onSubmit={handleSubmit}>
             <h3 className="auth-headers">Email</h3>
-            <input type="email" placeholder="Email" name="email" onChange={handleChange} required />
+            <input type="email" placeholder="@ Email" name="email" onChange={handleChange} required />
             <h3 className="auth-headers">Password</h3>
             <input type="password" placeholder="*****" name="password" onChange={handleChange} required />
             <Button 

@@ -1,10 +1,10 @@
 import React from 'react';
 import '../ui/styles/dashboard.css'
 
-import Topbar from '../ui/Topbar';
 import OverviewCards from '../ui/OverviewCards';
 import TransactionTable from '../ui/TransactionTable';
 import BudgetTracker from '../ui/BudgetTracker';
+import Analytics from '../ui/Analytics';
 import Footer from '../ui/Footer';
 
 function Dashboard() {
@@ -24,8 +24,8 @@ function Dashboard() {
   // Only render dashboard content, not layout/sidebar
   return (
     <>
-      <Topbar title="Welcome Back!"/>
       <OverviewCards/>
+      <Analytics/>
       <TransactionTable/>
       <BudgetTracker/>
       <Footer/>

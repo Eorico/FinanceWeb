@@ -1,17 +1,19 @@
-import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import Sidebar from '../ui/Sidebar';
+import './styles/dashboard.css';
 
 function Layout() {
-    return (
-        <div className="dashboard-container">
-            <Sidebar/>
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
-            <div className="main-content">
-                <Outlet/>
-            </div>
-        </div>
-    );
+  return (
+    <div className="dashboard-container">
+      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <main className={`main-content ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
+        <Outlet />
+      </main>
+    </div>
+  );
 }
 
 export default Layout;
-

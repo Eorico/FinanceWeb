@@ -10,6 +10,7 @@ import Settings from './ui/Settings';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './ui/Layout';
 import TransactionsTable from './ui/TransactionTable';
+import Analytics from './ui/Analytics';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -49,6 +50,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="budgetracker" element={<BudgetTracker />} />
+            <Route path="analytics" element={<Analytics />} />
             <Route path="transactions" element={<TransactionsTable />} />
             <Route path="todolist" element={<TodoList />} />
             <Route path="settings" element={<Settings />} />
