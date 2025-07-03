@@ -17,6 +17,14 @@ import {
 function Sidebar({ isCollapsed, setIsCollapsed }) {
   const location = useLocation();
 
+  let user = { name: '', email: '' };
+
+  try {
+    user = JSON.parse(localStorage.getItem('user')) || { name: '', email: ''};
+  } catch {
+    user = { name: '', email: '' }
+  }
+
   const menuItems = [
     { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
     { path: '/budgetracker', label: 'Budget', icon: PiggyBank },
@@ -89,8 +97,8 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
               <User size={20} />
             </div>
             <div className="user-details">
-              <span className="user-name">John Doe</span>
-              <span className="user-email">john@example.com</span>
+              <span className="user-name">{user.name}</span>
+              <span className="user-email">{user.email}</span> 
             </div>
           </div>
         )}

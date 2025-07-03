@@ -6,11 +6,11 @@ function Settings() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     // Profile
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '+1 (555) 123-4567',
-    bio: 'Financial enthusiast focused on smart budgeting and investment strategies.',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    bio: '',
     
     // Security
     currentPassword: '',

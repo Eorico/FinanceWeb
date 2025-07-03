@@ -23,6 +23,10 @@ function Login()
         try {
             const res = await login(formData);
             localStorage.setItem('token', res.data.token); 
+            localStorage.setItem('user', JSON.stringify({
+                name: res.data.name,
+                email: res.data.email
+            }));
             navigate('/dashboard');
         } catch (err) {
             setError(err.response?.data?.message || 'Login Failed');
