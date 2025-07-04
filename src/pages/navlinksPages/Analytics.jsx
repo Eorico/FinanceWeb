@@ -6,30 +6,11 @@ function Analytics() {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   // Sample data - in a real app, this would come from your backend
-  const spendingTrends = [
-    { month: 'Jan', income: 3200, expenses: 2100, savings: 1100 },
-    { month: 'Feb', income: 3200, expenses: 2300, savings: 900 },
-    { month: 'Mar', income: 3500, expenses: 2200, savings: 1300 },
-    { month: 'Apr', income: 3200, expenses: 1900, savings: 1300 },
-    { month: 'May', income: 3400, expenses: 2400, savings: 1000 },
-    { month: 'Jun', income: 3200, expenses: 2100, savings: 1100 }
-  ];
+  const spendingTrends = [];
 
-  const categoryBreakdown = [
-    { category: 'Food & Dining', amount: 520, percentage: 35, color: '#ef4444' },
-    { category: 'Transportation', amount: 180, percentage: 12, color: '#3b82f6' },
-    { category: 'Entertainment', amount: 240, percentage: 16, color: '#8b5cf6' },
-    { category: 'Shopping', amount: 280, percentage: 19, color: '#f59e0b' },
-    { category: 'Utilities', amount: 195, percentage: 13, color: '#10b981' },
-    { category: 'Other', amount: 75, percentage: 5, color: '#6b7280' }
-  ];
+  const categoryBreakdown = [];
 
-  const financialGoals = [
-    { goal: 'Emergency Fund', target: 10000, current: 6500, percentage: 65 },
-    { goal: 'Vacation Fund', target: 3000, current: 1200, percentage: 40 },
-    { goal: 'New Car', target: 15000, current: 4500, percentage: 30 },
-    { goal: 'Investment Portfolio', target: 25000, current: 8750, percentage: 35 }
-  ];
+  const financialGoals = [];
 
   const insights = [
     {

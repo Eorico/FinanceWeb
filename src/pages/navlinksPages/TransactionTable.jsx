@@ -2,16 +2,7 @@ import React, { useState } from 'react';
 import { Search, Filter, Download, ArrowUpDown, Calendar, DollarSign, Tag } from 'lucide-react';
 
 function TransactionsTable() {
-  const [transactions, setTransactions] = useState([
-    { id: 1, date: '2025-01-15', description: 'Salary Deposit', category: 'Income', type: 'income', amount: 3200.00, status: 'completed' },
-    { id: 2, date: '2025-01-14', description: 'Grocery Store', category: 'Food', type: 'expense', amount: -85.50, status: 'completed' },
-    { id: 3, date: '2025-01-13', description: 'Netflix Subscription', category: 'Entertainment', type: 'expense', amount: -15.99, status: 'completed' },
-    { id: 4, date: '2025-01-12', description: 'Freelance Project', category: 'Income', type: 'income', amount: 750.00, status: 'pending' },
-    { id: 5, date: '2025-01-11', description: 'Gas Station', category: 'Transportation', type: 'expense', amount: -45.20, status: 'completed' },
-    { id: 6, date: '2025-01-10', description: 'Coffee Shop', category: 'Food', type: 'expense', amount: -12.75, status: 'completed' },
-    { id: 7, date: '2025-01-09', description: 'Online Shopping', category: 'Shopping', type: 'expense', amount: -129.99, status: 'completed' },
-    { id: 8, date: '2025-01-08', description: 'Rent Payment', category: 'Housing', type: 'expense', amount: -1200.00, status: 'completed' }
-  ]);
+  const [transactions, setTransactions] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');

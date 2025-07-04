@@ -12,5 +12,4 @@ const apiClient = axios.create({
 
 export const signup = (userData) => apiClient.post('/signup', userData);
 export const login = (userData) => apiClient.post('/login', userData); // ✅ Using relative path
-export const forgotPassword = (emailData) =>
-  apiClient.post('/forgot-password', emailData);
+export const forgotPassword = (emailData) => apiClient.post('/forgot-password', emailData);

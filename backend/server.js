@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(morgan('dev'));
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/auth', userRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

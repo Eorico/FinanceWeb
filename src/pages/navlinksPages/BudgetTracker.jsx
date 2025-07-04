@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import { Target, TrendingUp, AlertTriangle, CheckCircle, Plus, Minus } from 'lucide-react';
 
 function BudgetTracker() {
-  const [budgets, setBudgets] = useState([
-    { id: 1, category: 'Food & Dining', budget: 800, spent: 520, color: 'blue' },
-    { id: 2, category: 'Transportation', budget: 300, spent: 180, color: 'green' },
-    { id: 3, category: 'Entertainment', budget: 200, spent: 240, color: 'red' },
-    { id: 4, category: 'Shopping', budget: 400, spent: 280, color: 'purple' },
-    { id: 5, category: 'Utilities', budget: 250, spent: 195, color: 'orange' }
-  ]);
+  const [budgets, setBudgets] = useState([]);
 
   const [showAddForm, setShowAddForm] = useState(false);
   const [newBudget, setNewBudget] = useState({ category: '', budget: '', color: 'blue' });

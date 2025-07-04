@@ -1,9 +1,9 @@
 // backend/controllers/authController.js
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const User = require('../models/User');
-const sendEmail = require('../util/sendEmail');
-const crypto = require('crypto');
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import User from '../models/User.js';
+import sendEmail from '../util/sendEmail.js';
+import crypto from 'crypto';
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -115,4 +115,4 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, forgotPassword };
+export { registerUser, loginUser, forgotPassword };

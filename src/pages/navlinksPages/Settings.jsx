@@ -1,37 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Mail, Lock, Bell, Shield, Palette, Globe, Save, Eye, EyeOff } from 'lucide-react';
+import { getCurrentUser, updateUser } from '../../api/userApi.js';
 
 function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    // Profile
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     bio: '',
-    
-    // Security
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
     twoFactorEnabled: true,
-    
-    // Notifications
     emailNotifications: true,
     pushNotifications: false,
     budgetAlerts: true,
     transactionAlerts: true,
-    
-    // Preferences
     theme: 'light',
     currency: 'USD',
     language: 'en',
     dateFormat: 'MM/DD/YYYY'
   });
-
   const [saveStatus, setSaveStatus] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  // Load user data on mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getCurrentUser();
+        const user = res.data.user;
+
+        setFormData(prev => ({
+          ...prev,
+          firstName: user.name.split(' ')[0] || '',
+          lastName: user.name.split(' ').slice(1).join(' ') || '',
+          email: user.email || '',
+          phone: user.phone || '',
+          bio: user.bio || ''
+        }));
+      } catch (err) {
+        console.error('Failed to fetch user:', err.response?.data || err.message);
+        alert('Could not load user data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -41,23 +61,43 @@ function Settings() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSaveStatus('saving');
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    const payload = {
+      name: `${formData.firstName} ${formData.lastName}`,
+      email: formData.email,
+      phone: formData.phone,
+      bio: formData.bio,
+      twoFactorEnabled: formData.twoFactorEnabled,
+      preferences: {
+        theme: formData.theme,
+        currency: formData.currency,
+        language: formData.language,
+        dateFormat: formData.dateFormat
+      }
+    };
+
+    try {
+      const res = await updateUser(payload);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
       setSaveStatus('saved');
       setTimeout(() => setSaveStatus(''), 3000);
-    }, 1000);
+    } catch (err) {
+      console.error('Update failed:', err.response?.data || err.message);
+      setSaveStatus('error');
+      setTimeout(() => setSaveStatus(''), 3000);
+    }
   };
 
   const tabs = [
     { id: 'profile', label: 'Profile', icon: User },
-    { id: 'security', label: 'Security', icon: Shield },
+    { id: 'security', label: 'Security', icon: Lock },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'preferences', label: 'Preferences', icon: Palette }
   ];
+
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -269,6 +309,7 @@ function Settings() {
         );
 
       case 'preferences':
+        
         return (
           <div className="tab-content">
             <h3 className="tab-title">App Preferences</h3>

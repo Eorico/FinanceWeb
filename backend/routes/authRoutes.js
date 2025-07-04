@@ -1,15 +1,15 @@
 // backend/routes/authRoutes.js
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const authController = require('../controllers/authController');
+import { registerUser, loginUser, forgotPassword } from '../controllers/authController.js';
 
 router.use((req, res, next) => {
   console.log(`Auth route hit: ${req.method} ${req.url}`);
   next();
 });
 
-router.post('/signup', authController.registerUser);
-router.post('/login', authController.loginUser);
-router.post('/forgot-password', authController.forgotPassword);
+router.post('/signup', registerUser);
+router.post('/login', loginUser);
+router.post('/forgot-password', forgotPassword);
 
-module.exports = router;
+export default router;

@@ -2,40 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Check, X, Calendar, Flag, Search, Filter } from 'lucide-react';
 
 function TodoList() {
-  const [todos, setTodos] = useState([
-    { 
-      id: 1, 
-      task: 'Review monthly budget and expenses', 
-      completed: false, 
-      priority: 'high',
-      dueDate: '2025-01-20',
-      category: 'Finance'
-    },
-    { 
-      id: 2, 
-      task: 'Pay credit card bill', 
-      completed: true, 
-      priority: 'high',
-      dueDate: '2025-01-15',
-      category: 'Bills'
-    },
-    { 
-      id: 3, 
-      task: 'Set up automatic savings transfer', 
-      completed: false, 
-      priority: 'medium',
-      dueDate: '2025-01-25',
-      category: 'Savings'
-    },
-    { 
-      id: 4, 
-      task: 'Research investment opportunities', 
-      completed: false, 
-      priority: 'low',
-      dueDate: '2025-01-30',
-      category: 'Investment'
-    }
-  ]);
+  const [todos, setTodos] = useState([]);
 
   const [newTask, setNewTask] = useState('');
   const [newPriority, setNewPriority] = useState('medium');
