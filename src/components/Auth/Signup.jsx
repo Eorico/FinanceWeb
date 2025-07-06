@@ -3,6 +3,7 @@ import { signup } from "../../api/authApi";
 import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import { ArrowLeftIcon } from "lucide-react";
+import Invalidation from "../../ui/Notifier";
 
 function Signup() 
 { 
@@ -54,7 +55,7 @@ function Signup()
     return (
     <div className="auth-container">
         <h2>Sign Up</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <Invalidation>{error}</Invalidation>}
         <form onSubmit={handleSubmit}>
         <h3 className="auth-headers">Full Name</h3>
             <input

@@ -23,7 +23,22 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 6,
-  },
+    select: false
+    },
+    phone: {
+        type: String,
+        default: ''
+    },
+    bio: {
+        type: String,
+        default: ''
+    },
+    preferences: {
+        theme: { type: String, default: 'light' },
+        currency: { type: String, default: 'USD' },
+        language: { type: String, default: 'en' },
+        dateFormat: { type: String, default: 'MM/DD/YYYY' }
+    },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 }, {

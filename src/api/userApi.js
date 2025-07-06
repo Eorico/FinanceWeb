@@ -18,5 +18,17 @@ userClient.interceptors.request.use(config => {
   return config;
 }, err => Promise.reject(err));
 
+// Log outgoing requests
+userClient.interceptors.request.use(config => {
+  console.log('Outgoing request:', config.url, config.data);
+  return config;
+});
+
+// Log incoming responses
+userClient.interceptors.response.use(response => {
+  console.log('Response:', response.config.url, response.data);
+  return response;
+});
+
 export const getCurrentUser = () => userClient.get('/user/me');
 export const updateUser = (userData) => userClient.put('/user/me', userData);
