@@ -1,20 +1,24 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Wallet, CreditCard, PiggyBank } from 'lucide-react';
+import { useFinancial } from './FinancialContext';
 
 function OverviewCards() {
+  const { getOverviewData } = useFinancial();
+  const overviewData = getOverviewData();
+
   const cards = [
     {
       title: 'Total Balance',
-      value: '$5,247.83',
+      value: `$${overviewData.totalBalance.toLocaleString()}`,
       change: '+2.5%',
-      trend: 'up',
+      trend: overviewData.totalBalance >= 0 ? 'up' : 'down',
       icon: Wallet,
       color: 'blue',
       description: 'vs last month'
     },
     {
       title: 'Income This Month',
-      value: '$3,200.00',
+      value: `$${overviewData.monthlyIncome.toLocaleString()}`,
       change: '+12.3%',
       trend: 'up',
       icon: TrendingUp,
@@ -23,7 +27,7 @@ function OverviewCards() {
     },
     {
       title: 'Expenses This Month',
-      value: '$1,847.25',
+      value: `$${overviewData.monthlyExpenses.toLocaleString()}`,
       change: '-5.2%',
       trend: 'down',
       icon: CreditCard,
@@ -32,27 +36,21 @@ function OverviewCards() {
     },
     {
       title: 'Savings Goal',
-      value: '$1,352.58',
-      change: '67.6%',
+      value: `$${overviewData.savingsGoalProgress.toLocaleString()}`,
+      change: `${((overviewData.savingsGoalProgress / overviewData.savingsGoalTarget) * 100).toFixed(1)}%`,
       trend: 'up',
       icon: PiggyBank,
       color: 'purple',
-      description: 'of $2,000 goal'
+      description: `of $${overviewData.savingsGoalTarget.toLocaleString()} goal`
     }
   ];
 
-  const getColorClasses = (color) => {
-    const colors = {
-      blue: 'bg-blue-50 border-blue-200 text-blue-600',
-      green: 'bg-green-50 border-green-200 text-green-600',
-      red: 'bg-red-50 border-red-200 text-red-600',
-      purple: 'bg-purple-50 border-purple-200 text-purple-600'
-    };
-    return colors[color] || colors.blue;
+  const getColorClass = (color) => {
+    return `card-icon-${color}`;
   };
 
-  const getTrendColor = (trend) => {
-    return trend === 'up' ? 'text-green-600' : 'text-red-600';
+  const getTrendClass = (trend) => {
+    return trend === 'up' ? 'trend-positive' : 'trend-negative';
   };
 
   return (
@@ -70,10 +68,10 @@ function OverviewCards() {
           return (
             <div key={index} className="overview-card">
               <div className="card-header">
-                <div className={`card-icon ${getColorClasses(card.color)}`}>
+                <div className={`card-icon ${getColorClass(card.color)}`}>
                   <Icon size={24} />
                 </div>
-                <div className={`trend-indicator ${getTrendColor(card.trend)}`}>
+                <div className={`trend-indicator ${getTrendClass(card.trend)}`}>
                   <TrendIcon size={16} />
                   <span className="trend-value">{card.change}</span>
                 </div>
@@ -93,6 +91,27 @@ function OverviewCards() {
             </div>
           );
         })}
+      </div>
+
+      {/* Additional Summary Stats */}
+      <div className="additional-stats">
+        <div className="stat-item">
+          <span className="stat-label">Budget Utilization</span>
+          <span className="stat-value">
+            {overviewData.totalBudget > 0 
+              ? `${((overviewData.totalSpent / overviewData.totalBudget) * 100).toFixed(1)}%`
+              : '0%'
+            }
+          </span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-label">Savings Rate</span>
+          <span className="stat-value">{overviewData.savingsRate}%</span>
+        </div>
+        <div className="stat-item">
+          <span className="stat-label">Budget Remaining</span>
+          <span className="stat-value">${overviewData.budgetRemaining.toLocaleString()}</span>
+        </div>
       </div>
     </section>
   );

@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './pages/navlinksPages/Layout';
 import TransactionsTable from './pages/navlinksPages/TransactionTable';
 import Analytics from './pages/navlinksPages/Analytics';
+import { FinancialProvider } from './pages/navlinksPages/FinancialContext';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -49,9 +50,21 @@ function App() {
           >
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="budgetracker" element={<BudgetTracker />} />
-            <Route path="analytics" element={<Analytics />} />
-            <Route path="transactions" element={<TransactionsTable />} />
+            <Route path="budgetracker" element={
+              <FinancialProvider>
+                <BudgetTracker />
+              </FinancialProvider>
+              } />
+            <Route path="analytics" element={
+              <FinancialProvider>
+                <Analytics />
+              </FinancialProvider>} 
+              />
+            <Route path="transactions" element={
+              <FinancialProvider>
+                <TransactionsTable />
+              </FinancialProvider>} 
+              />
             <Route path="todolist" element={<TodoList />} />
             <Route path="settings" element={<Settings />} />
           </Route>

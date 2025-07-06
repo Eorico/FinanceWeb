@@ -415,7 +415,7 @@ function Settings() {
             <div className="form-actions">
               <button 
                 type="submit" 
-                className={`save-btn ${saveStatus}`}
+                className={`save-btnOne ${saveStatus}`}
                 disabled={saveStatus === 'saving'}
               >
                 <Save size={20} />

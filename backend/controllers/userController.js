@@ -30,7 +30,6 @@ const updateUser = async (req, res) => {
             {
                 new: true,
                 runValidators: true,
-                select: '-password'
             }
             );
 

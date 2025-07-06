@@ -1,45 +1,60 @@
 import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, PieChart, BarChart3, Calendar, DollarSign, Target, AlertCircle } from 'lucide-react';
+import { useFinancial } from './FinancialContext';
 
 function Analytics() {
+  const { getAnalyticsData, financialGoals } = useFinancial();
   const [selectedPeriod, setSelectedPeriod] = useState('month');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Sample data - in a real app, this would come from your backend
-  const spendingTrends = [];
-
-  const categoryBreakdown = [];
-
-  const financialGoals = [];
+  const analyticsData = getAnalyticsData();
+  const { 
+    totalIncome, 
+    totalExpenses, 
+    totalSavings, 
+    savingsRate, 
+    categoryBreakdown, 
+    spendingTrends,
+    totalBudgetAmount,
+    totalBudgetSpent 
+  } = analyticsData;
 
   const insights = [
     {
-      type: 'positive',
+      type: totalExpenses < (totalIncome * 0.8) ? 'positive' : 'warning',
       icon: TrendingUp,
-      title: 'Spending Decreased',
-      description: 'Your expenses are 15% lower than last month',
-      value: '-$320'
+      title: 'Spending Analysis',
+      description: totalExpenses < (totalIncome * 0.8) 
+        ? 'Your expenses are well controlled' 
+        : 'Consider reducing expenses',
+      value: `$${totalExpenses.toLocaleString()}`
     },
     {
-      type: 'warning',
+      type: totalBudgetSpent > totalBudgetAmount ? 'warning' : 'positive',
       icon: AlertCircle,
-      title: 'Budget Alert',
-      description: 'Food & Dining is 20% over budget',
-      value: '+$104'
+      title: 'Budget Status',
+      description: totalBudgetSpent > totalBudgetAmount 
+        ? 'Over budget this month' 
+        : 'Within budget limits',
+      value: totalBudgetAmount > 0 
+        ? `${((totalBudgetSpent / totalBudgetAmount) * 100).toFixed(1)}%`
+        : '0%'
     },
     {
       type: 'positive',
       icon: Target,
       title: 'Savings Goal',
-      description: 'On track to meet emergency fund goal',
-      value: '65%'
+      description: 'Progress towards emergency fund',
+      value: financialGoals[0] ? `${financialGoals[0].percentage}%` : '0%'
     },
     {
-      type: 'neutral',
+      type: parseFloat(savingsRate) >= 20 ? 'positive' : 'warning',
       icon: BarChart3,
-      title: 'Average Monthly',
-      description: 'Your average monthly savings rate',
-      value: '22%'
+      title: 'Savings Rate',
+      description: parseFloat(savingsRate) >= 20 
+        ? 'Excellent savings rate!' 
+        : 'Try to save more',
+      value: `${savingsRate}%`
     }
   ];
 
@@ -58,11 +73,6 @@ function Analytics() {
     const previous = data[data.length - 2][field];
     return ((current - previous) / previous * 100).toFixed(1);
   };
-
-  const totalIncome = spendingTrends.reduce((sum, item) => sum + item.income, 0);
-  const totalExpenses = spendingTrends.reduce((sum, item) => sum + item.expenses, 0);
-  const totalSavings = spendingTrends.reduce((sum, item) => sum + item.savings, 0);
-  const savingsRate = ((totalSavings / totalIncome) * 100).toFixed(1);
 
   return (
     <section className="analytics-section">
@@ -139,7 +149,7 @@ function Analytics() {
             </div>
             <div className="bar-chart">
               {spendingTrends.map((data, index) => {
-                const maxValue = Math.max(...spendingTrends.map(d => d.income));
+                const maxValue = Math.max(...spendingTrends.map(d => Math.max(d.income, d.expenses)));
                 return (
                   <div key={index} className="chart-bar-group">
                     <div className="chart-bars">
@@ -155,7 +165,7 @@ function Analytics() {
                       ></div>
                       <div 
                         className="chart-bar savings"
-                        style={{ height: `${(data.savings / maxValue) * 100}%` }}
+                        style={{ height: `${Math.abs(data.savings) / maxValue * 100}%` }}
                         title={`Savings: $${data.savings}`}
                       ></div>
                     </div>
@@ -186,7 +196,7 @@ function Analytics() {
                   <span className="category-name">{category.category}</span>
                 </div>
                 <div className="category-stats">
-                  <span className="category-amount">${category.amount}</span>
+                  <span className="category-amount">${category.amount.toLocaleString()}</span>
                   <span className="category-percentage">{category.percentage}%</span>
                 </div>
                 <div className="category-bar">
@@ -246,19 +256,19 @@ function Analytics() {
           </div>
           <div className="summary-stats">
             <div className="summary-item">
-              <span className="summary-label">Total Income (6 months)</span>
+              <span className="summary-label">Total Income</span>
               <span className="summary-value positive">${totalIncome.toLocaleString()}</span>
             </div>
             <div className="summary-item">
-              <span className="summary-label">Total Expenses (6 months)</span>
+              <span className="summary-label">Total Expenses</span>
               <span className="summary-value negative">${totalExpenses.toLocaleString()}</span>
             </div>
             <div className="summary-item">
-              <span className="summary-label">Total Savings (6 months)</span>
+              <span className="summary-label">Total Savings</span>
               <span className="summary-value neutral">${totalSavings.toLocaleString()}</span>
             </div>
             <div className="summary-item highlight">
-              <span className="summary-label">Average Savings Rate</span>
+              <span className="summary-label">Savings Rate</span>
               <span className="summary-value positive">{savingsRate}%</span>
             </div>
           </div>
@@ -266,10 +276,10 @@ function Analytics() {
           <div className="summary-insights">
             <h4>Key Insights</h4>
             <ul>
-              <li>Your savings rate is above the recommended 20%</li>
-              <li>Food & Dining is your largest expense category</li>
-              <li>Income has been consistent over the past 6 months</li>
-              <li>Emergency fund goal is 65% complete</li>
+              <li>Your savings rate is {parseFloat(savingsRate) >= 20 ? 'above' : 'below'} the recommended 20%</li>
+              <li>{categoryBreakdown[0]?.category || 'No category'} is your largest expense category</li>
+              <li>Budget utilization: {totalBudgetAmount > 0 ? `${((totalBudgetSpent / totalBudgetAmount) * 100).toFixed(1)}%` : '0%'}</li>
+              <li>{financialGoals[0]?.goal || 'Emergency fund'} goal is {financialGoals[0]?.percentage || 0}% complete</li>
             </ul>
           </div>
         </div>

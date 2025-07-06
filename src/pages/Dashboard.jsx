@@ -1,4 +1,5 @@
 import React from 'react';
+import { FinancialProvider } from './navlinksPages/FinancialContext';
 import '../ui/styles/dashboard.css'
 
 import OverviewCards from './navlinksPages/OverviewCards';
@@ -23,13 +24,13 @@ function Dashboard() {
   
   // Only render dashboard content, not layout/sidebar
   return (
-    <>
+    <FinancialProvider>
       <OverviewCards/>
       <Analytics/>
       <TransactionTable/>
       <BudgetTracker/>
       <Footer/>
-    </>
+    </FinancialProvider>
   );
 }
 
