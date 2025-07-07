@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Target, TrendingUp, AlertTriangle, CheckCircle, Plus, Minus, Edit2, Trash2, Save, X } from 'lucide-react';
-import { useFinancial } from './FinancialContext';
+import { useFinancial } from '../../components/context/FinancialContext';
 
 function BudgetTracker() {
   const { budgets, addBudget, updateBudget, deleteBudget, updateBudgetSpending } = useFinancial();

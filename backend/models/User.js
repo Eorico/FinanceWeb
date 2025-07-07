@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 import validator from 'validator';
 
@@ -38,6 +39,26 @@ const userSchema = new mongoose.Schema({
         language: { type: String, default: 'en' },
         dateFormat: { type: String, default: 'MM/DD/YYYY' }
     },
+    budgets: [
+        {
+            id: Number,
+            category: String,
+            budget: Number,
+            spent: Number,
+            color: String
+        }
+    ],
+    transactions: [
+        {
+            id: Number,
+            date: String,
+            description: String,
+            category: String,
+            amount: Number,
+            type: String,
+            status: String
+        }
+    ],
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 }, {

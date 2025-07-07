@@ -11,7 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './pages/navlinksPages/Layout';
 import TransactionsTable from './pages/navlinksPages/TransactionTable';
 import Analytics from './pages/navlinksPages/Analytics';
-import { FinancialProvider } from './pages/navlinksPages/FinancialContext';
+import { FinancialProvider } from './components/context/FinancialContext';
 
 function App() {
   const token = localStorage.getItem('token');

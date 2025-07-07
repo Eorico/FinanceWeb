@@ -1,6 +1,6 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Wallet, CreditCard, PiggyBank } from 'lucide-react';
-import { useFinancial } from './FinancialContext';
+import { useFinancial } from '../../components/context/FinancialContext';
 
 function OverviewCards() {
   const { getOverviewData } = useFinancial();

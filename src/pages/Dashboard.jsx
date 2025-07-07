@@ -1,5 +1,5 @@
 import React from 'react';
-import { FinancialProvider } from './navlinksPages/FinancialContext';
+import { FinancialProvider } from '../components/context/FinancialContext';
 import '../ui/styles/dashboard.css'
 
 import OverviewCards from './navlinksPages/OverviewCards';

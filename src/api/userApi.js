@@ -30,5 +30,9 @@ userClient.interceptors.response.use(response => {
   return response;
 });
 
+
+
 export const getCurrentUser = () => userClient.get('/user/me');
 export const updateUser = (userData) => userClient.put('/user/me', userData);
+export const updateBudgets = (budgets) => userClient.put('/user/me/budgets', {budgets});
+export const updateTransactions = (transactions) => userClient.put('/user/me/transactions', {transactions});

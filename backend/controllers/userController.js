@@ -49,4 +49,42 @@ const updateUser = async (req, res) => {
     }
 };
 
-export { getCurrentUser, updateUser };
+const updateBudgets = async (req, res) => {
+    const {budget} = req.body;
+    try {
+        const updateUser = await User.findByIdAndUpdate(
+            req.user.id,
+            { $set: {budget} },
+            { new: true, runValidators: true }
+        ).select('-password');
+
+        if (!updateUser) {
+            return res.status(404).json({ message: 'User not Found' })
+        }
+
+        res.json({ user: updateUser })
+    } catch (err) {
+        console.error('Failed to update budgets:', err.message);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+const updateTransactions = async (req, res) => {
+  const { transactions } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { $set: { transactions } },
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!updatedUser) return res.status(404).json({ message: 'User not found' });
+    res.json({ user: updatedUser });
+  } catch (err) {
+    console.error('Transaction update failed:', err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export { getCurrentUser, updateUser, updateBudgets, updateTransactions };

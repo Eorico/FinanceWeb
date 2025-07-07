@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { updateBudgets, updateTransactions } from '../../api/userApi';
 
 const FinancialContext = createContext();
 
@@ -17,29 +18,37 @@ export const FinancialProvider = ({ children }) => {
   // Start with empty transactions array
   const [transactions, setTransactions] = useState([]);
 
-  const [financialGoals, setFinancialGoals] = useState([
-    {
-      id: 1,
-      goal: 'Emergency Fund',
-      current: 0,
-      target: 2000,
-      percentage: 0
-    },
-    {
-      id: 2,
-      goal: 'Vacation Fund',
-      current: 0,
-      target: 1500,
-      percentage: 0
-    },
-    {
-      id: 3,
-      goal: 'New Car',
-      current: 0,
-      target: 8000,
-      percentage: 0
+  const [financialGoals, setFinancialGoals] = useState([]);
+
+ useEffect(() => {
+  const syncBudgetsToServer = async () => {
+    try {
+      const res = await updateBudgets({ budgets });
+      localStorage.setItem('user', JSON.stringify(res.data.user)); // ✅ Update user in localStorage
+    } catch (err) {
+      console.error('Failed to save budgets:', err.message);
     }
-  ]);
+  };
+
+  if (budgets.length > 0 && localStorage.getItem('token')) {
+    syncBudgetsToServer();
+  }
+}, [budgets]);
+
+useEffect(() => {
+  const syncTransactionsToServer = async () => {
+    try {
+      const res = await updateTransactions(transactions);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+    } catch (err) {
+      console.error('Failed to save transactions:', err.message);
+    }
+  };
+
+  if (transactions.length > 0 && localStorage.getItem('token')) {
+    syncTransactionsToServer();
+  }
+}, [transactions]);
 
   // Budget CRUD operations
   const addBudget = (newBudget) => {

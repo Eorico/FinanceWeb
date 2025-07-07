@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, PieChart, BarChart3, Calendar, DollarSign, Target, AlertCircle } from 'lucide-react';
-import { useFinancial } from './FinancialContext';
+import { useFinancial } from '../../components/context/FinancialContext';
 
 function Analytics() {
   const { getAnalyticsData, financialGoals } = useFinancial();

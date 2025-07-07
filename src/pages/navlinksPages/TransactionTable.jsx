@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Filter, Download, ArrowUpDown, Calendar, DollarSign, Tag, Plus, Edit2, Trash2, Save, X } from 'lucide-react';
-import { useFinancial } from './FinancialContext';
+import { useFinancial } from '../../components/context/FinancialContext';
 
 function TransactionsTable() {
   const { transactions, budgets, addTransaction, updateTransaction, deleteTransaction, exportToExcel } = useFinancial();

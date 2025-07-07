@@ -76,7 +76,9 @@ function Settings() {
         currency: formData.currency,
         language: formData.language,
         dateFormat: formData.dateFormat
-      }
+      },
+      budgets: formData.budgets,
+      transactions: formData.transactions,
     };
 
     try {
