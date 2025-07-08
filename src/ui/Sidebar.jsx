@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   DollarSign, 
@@ -34,10 +34,12 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
     { path: '/settings', label: 'Settings', icon: Settings },
   ];
 
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     if (window.confirm('Are you sure you want to logout?')) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      navigate('/login');
     }
   };
 
@@ -108,10 +110,8 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
           onClick={handleLogout}
           title={isCollapsed ? 'Logout' : ''}
         >
-          <Link>
-            <LogOut size={20} />
-            {!isCollapsed && <span>Logout</span>}
-          </Link>
+          <LogOut size={20} />
+          {!isCollapsed && <span>Logout</span>}
         </button>
       </div>
     </aside>
