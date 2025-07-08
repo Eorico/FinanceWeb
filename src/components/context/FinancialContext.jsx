@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { updateBudgets, updateTransactions } from '../../api/userApi';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { budgetAPI, transactionAPI, todoAPI, goalAPI } from '../../api/userApi';
 
 const FinancialContext = createContext();
 
@@ -12,46 +13,106 @@ export const useFinancial = () => {
 };
 
 export const FinancialProvider = ({ children }) => {
-  // Start with empty budgets array
-  const [budgets, setBudgets] = useState([]);
+  // Use localStorage as fallback and for offline mode
+  const [budgets, setBudgets] = useLocalStorage('financial_budgets', []);
+  const [transactions, setTransactions] = useLocalStorage('financial_transactions', []);
+  const [financialGoals, setFinancialGoals] = useLocalStorage('financial_goals', []);
+  const [todos, setTodos] = useLocalStorage('financial_todos', []);
+  
+  // Loading and error states
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-  // Start with empty transactions array
-  const [transactions, setTransactions] = useState([]);
+  // Check if user is authenticated
+  const isAuthenticated = () => {
+    return localStorage.getItem('token') !== null;
+  };
 
-  const [financialGoals, setFinancialGoals] = useState([]);
+  // Handle online/offline status
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
 
- useEffect(() => {
-  const syncBudgetsToServer = async () => {
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // Load data from server on mount if authenticated and online
+  useEffect(() => {
+    if (isAuthenticated() && isOnline) {
+      loadAllData();
+    }
+  }, [isOnline]);
+
+  // Auto-save data every 30 seconds as backup
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Force save current state to localStorage
+      localStorage.setItem('financial_budgets', JSON.stringify(budgets));
+      localStorage.setItem('financial_transactions', JSON.stringify(transactions));
+      localStorage.setItem('financial_goals', JSON.stringify(financialGoals));
+      localStorage.setItem('financial_todos', JSON.stringify(todos));
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(interval);
+  }, [budgets, transactions, financialGoals, todos]);
+
+  // Load all data from server
+  const loadAllData = async () => {
+    if (!isAuthenticated() || !isOnline) return;
+
+    setLoading(true);
+    setError(null);
+
     try {
-      const res = await updateBudgets({ budgets });
-      localStorage.setItem('user', JSON.stringify(res.data.user)); // ✅ Update user in localStorage
+      const [budgetsRes, transactionsRes, todosRes, goalsRes] = await Promise.all([
+        budgetAPI.getAll().catch(() => ({ data: [] })),
+        transactionAPI.getAll().catch(() => ({ data: [] })),
+        todoAPI.getAll().catch(() => ({ data: [] })),
+        goalAPI.getAll().catch(() => ({ data: [] }))
+      ]);
+
+      setBudgets(budgetsRes.data || []);
+      setTransactions(transactionsRes.data || []);
+      setTodos(todosRes.data || []);
+      setFinancialGoals(goalsRes.data || []);
     } catch (err) {
-      console.error('Failed to save budgets:', err.message);
+      console.error('Error loading data:', err);
+      setError('Failed to load data from server. Using local data.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (budgets.length > 0 && localStorage.getItem('token')) {
-    syncBudgetsToServer();
-  }
-}, [budgets]);
+  // Generic API call wrapper
+  const apiCall = async (apiFunction, localUpdate, errorMessage) => {
+    if (!isAuthenticated() || !isOnline) {
+      // If offline or not authenticated, just update locally
+      localUpdate();
+      return;
+    }
 
-useEffect(() => {
-  const syncTransactionsToServer = async () => {
     try {
-      const res = await updateTransactions(transactions);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      const result = await apiFunction();
+      localUpdate();
+      return result;
     } catch (err) {
-      console.error('Failed to save transactions:', err.message);
+      console.error(errorMessage, err);
+      setError(errorMessage);
+      // Still update locally as fallback
+      localUpdate();
+      throw err;
     }
   };
-
-  if (transactions.length > 0 && localStorage.getItem('token')) {
-    syncTransactionsToServer();
-  }
-}, [transactions]);
 
   // Budget CRUD operations
-  const addBudget = (newBudget) => {
+  const addBudget = async (newBudget) => {
     const budget = {
       id: Date.now(),
       category: newBudget.category,
@@ -59,27 +120,44 @@ useEffect(() => {
       spent: 0,
       color: newBudget.color
     };
-    setBudgets(prev => [...prev, budget]);
+
+    await apiCall(
+      () => budgetAPI.create(budget),
+      () => setBudgets(prev => [...prev, budget]),
+      'Failed to create budget'
+    );
   };
 
-  const updateBudget = (budgetId, updatedBudget) => {
-    setBudgets(prev => prev.map(budget => 
-      budget.id === budgetId 
-        ? { ...budget, ...updatedBudget }
-        : budget
-    ));
+  const updateBudget = async (budgetId, updatedBudget) => {
+    await apiCall(
+      () => budgetAPI.update(budgetId, updatedBudget),
+      () => setBudgets(prev => prev.map(budget => 
+        budget.id === budgetId 
+          ? { ...budget, ...updatedBudget }
+          : budget
+      )),
+      'Failed to update budget'
+    );
   };
 
-  const deleteBudget = (budgetId) => {
-    setBudgets(prev => prev.filter(budget => budget.id !== budgetId));
+  const deleteBudget = async (budgetId) => {
+    await apiCall(
+      () => budgetAPI.delete(budgetId),
+      () => setBudgets(prev => prev.filter(budget => budget.id !== budgetId)),
+      'Failed to delete budget'
+    );
   };
 
-  const updateBudgetSpending = (budgetId, amount) => {
-    setBudgets(prev => prev.map(budget => 
-      budget.id === budgetId 
-        ? { ...budget, spent: Math.max(0, budget.spent + amount) }
-        : budget
-    ));
+  const updateBudgetSpending = async (budgetId, amount) => {
+    await apiCall(
+      () => budgetAPI.updateSpending(budgetId, amount),
+      () => setBudgets(prev => prev.map(budget => 
+        budget.id === budgetId 
+          ? { ...budget, spent: Math.max(0, budget.spent + amount) }
+          : budget
+      )),
+      'Failed to update budget spending'
+    );
 
     // Add transaction when spending is updated
     if (amount !== 0) {
@@ -94,19 +172,24 @@ useEffect(() => {
           type: amount > 0 ? 'expense' : 'income',
           status: 'completed'
         };
-        setTransactions(prev => [transaction, ...prev]);
+        await addTransaction(transaction);
       }
     }
   };
 
   // Transaction CRUD operations
-  const addTransaction = (transaction) => {
+  const addTransaction = async (transaction) => {
     const newTransaction = {
       id: Date.now(),
       ...transaction,
       status: 'completed'
     };
-    setTransactions(prev => [newTransaction, ...prev]);
+
+    await apiCall(
+      () => transactionAPI.create(newTransaction),
+      () => setTransactions(prev => [newTransaction, ...prev]),
+      'Failed to create transaction'
+    );
 
     // Update budget spending if category matches
     if (transaction.type === 'expense') {
@@ -121,14 +204,18 @@ useEffect(() => {
     }
   };
 
-  const updateTransaction = (transactionId, updatedTransaction) => {
+  const updateTransaction = async (transactionId, updatedTransaction) => {
     const oldTransaction = transactions.find(t => t.id === transactionId);
     
-    setTransactions(prev => prev.map(transaction => 
-      transaction.id === transactionId 
-        ? { ...transaction, ...updatedTransaction }
-        : transaction
-    ));
+    await apiCall(
+      () => transactionAPI.update(transactionId, updatedTransaction),
+      () => setTransactions(prev => prev.map(transaction => 
+        transaction.id === transactionId 
+          ? { ...transaction, ...updatedTransaction }
+          : transaction
+      )),
+      'Failed to update transaction'
+    );
 
     // Update budget spending if category changed
     if (oldTransaction && oldTransaction.type === 'expense') {
@@ -154,10 +241,14 @@ useEffect(() => {
     }
   };
 
-  const deleteTransaction = (transactionId) => {
+  const deleteTransaction = async (transactionId) => {
     const transaction = transactions.find(t => t.id === transactionId);
     
-    setTransactions(prev => prev.filter(t => t.id !== transactionId));
+    await apiCall(
+      () => transactionAPI.delete(transactionId),
+      () => setTransactions(prev => prev.filter(t => t.id !== transactionId)),
+      'Failed to delete transaction'
+    );
 
     // Update budget spending if it was an expense
     if (transaction && transaction.type === 'expense') {
@@ -170,6 +261,65 @@ useEffect(() => {
         ));
       }
     }
+  };
+
+  // Todo CRUD operations
+  const addTodo = async (todo) => {
+    const newTodo = {
+      id: Date.now(),
+      ...todo,
+      createdAt: new Date().toISOString()
+    };
+
+    await apiCall(
+      () => todoAPI.create(newTodo),
+      () => setTodos(prev => [newTodo, ...prev]),
+      'Failed to create todo'
+    );
+
+    return newTodo;
+  };
+
+  const updateTodo = async (todoId, updatedTodo) => {
+    const updateData = { ...updatedTodo, updatedAt: new Date().toISOString() };
+
+    await apiCall(
+      () => todoAPI.update(todoId, updateData),
+      () => setTodos(prev => prev.map(todo => 
+        todo.id === todoId 
+          ? { ...todo, ...updateData }
+          : todo
+      )),
+      'Failed to update todo'
+    );
+  };
+
+  const deleteTodo = async (todoId) => {
+    await apiCall(
+      () => todoAPI.delete(todoId),
+      () => setTodos(prev => prev.filter(todo => todo.id !== todoId)),
+      'Failed to delete todo'
+    );
+  };
+
+  const toggleTodo = async (todoId) => {
+    const todo = todos.find(t => t.id === todoId);
+    if (!todo) return;
+
+    const updateData = { 
+      completed: !todo.completed, 
+      updatedAt: new Date().toISOString() 
+    };
+
+    await apiCall(
+      () => todoAPI.toggle(todoId),
+      () => setTodos(prev => prev.map(t => 
+        t.id === todoId 
+          ? { ...t, ...updateData }
+          : t
+      )),
+      'Failed to toggle todo'
+    );
   };
 
   // Calculate analytics data
@@ -310,10 +460,62 @@ useEffect(() => {
     document.body.removeChild(link);
   };
 
+  // Data management functions
+  const clearAllData = async () => {
+    if (window.confirm('Are you sure you want to clear all financial data? This action cannot be undone.')) {
+      setBudgets([]);
+      setTransactions([]);
+      setFinancialGoals([]);
+      setTodos([]);
+      localStorage.removeItem('financial_budgets');
+      localStorage.removeItem('financial_transactions');
+      localStorage.removeItem('financial_goals');
+      localStorage.removeItem('financial_todos');
+    }
+  };
+
+  const exportAllData = () => {
+    const allData = {
+      budgets,
+      transactions,
+      financialGoals,
+      todos,
+      exportDate: new Date().toISOString(),
+      version: '1.0'
+    };
+    
+    const dataStr = JSON.stringify(allData, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `financial_data_backup_${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const importData = (jsonData) => {
+    try {
+      const data = JSON.parse(jsonData);
+      if (data.budgets) setBudgets(data.budgets);
+      if (data.transactions) setTransactions(data.transactions);
+      if (data.financialGoals) setFinancialGoals(data.financialGoals);
+      if (data.todos) setTodos(data.todos);
+      return { success: true, message: 'Data imported successfully!' };
+    } catch (error) {
+      return { success: false, message: 'Invalid file format. Please select a valid backup file.' };
+    }
+  };
+
   const value = {
     budgets,
     transactions,
     financialGoals,
+    todos,
+    loading,
+    error,
+    isOnline,
+    isAuthenticated: isAuthenticated(),
     addBudget,
     updateBudget,
     deleteBudget,
@@ -321,10 +523,18 @@ useEffect(() => {
     addTransaction,
     updateTransaction,
     deleteTransaction,
+    addTodo,
+    updateTodo,
+    deleteTodo,
+    toggleTodo,
     getAnalyticsData,
     getOverviewData,
     setFinancialGoals,
-    exportToExcel
+    exportToExcel,
+    clearAllData,
+    exportAllData,
+    importData,
+    loadAllData
   };
 
   return (
