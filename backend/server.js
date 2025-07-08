@@ -4,12 +4,17 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import { Path } from 'ogl';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -22,16 +27,20 @@ app.use(cors({
 app.use(helmet());
 app.use(morgan('dev'));
 
-// Routes
-app.use(express.static('dist'));
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/auth', userRoutes);
 
-// Basic route
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
-})
+// Serve static files from React frontend
+const distPath = path.resolve(__dirname, '../dist');
+app.use(express.static(distPath));
 
+// Fallback to index.html for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
+
+// Optional API health route
 app.get('/', (req, res) => {
   res.json({ message: 'Finance App API Running' });
 });
