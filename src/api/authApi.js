@@ -10,6 +10,6 @@ const apiClient = axios.create({
   },
 });
 
-export const signup = (userData) => apiClient.post('https://financewebbackend.onrender.com/signup', userData);
-export const login = (userData) => apiClient.post('https://financewebbackend.onrender.com/login', userData); // ✅ Using relative path
-export const forgotPassword = (emailData) => apiClient.post('https://financewebbackend.onrender.com/forgot-password', emailData);
+export const signup = (userData) => apiClient.post('/signup', userData);
+export const login = (userData) => apiClient.post('/login', userData); // ✅ Using relative path
+export const forgotPassword = (emailData) => apiClient.post('/forgot-password', emailData);

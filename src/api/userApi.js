@@ -32,37 +32,37 @@ userClient.interceptors.response.use(response => {
 
 // Budget API calls
 export const budgetAPI = {
-  getAll: () => apiClient.get('https://financewebbackend.onrender.com/budgets'),
-  create: (budget) => apiClient.post('https://financewebbackend.onrender.com/budgets', budget),
-  update: (id, budget) => apiClient.put(`https://financewebbackend.onrender.com/budgets/${id}`, budget),
-  delete: (id) => apiClient.delete(`https://financewebbackend.onrender.com/budgets/${id}`),
-  updateSpending: (id, amount) => apiClient.patch(`https://financewebbackend.onrender.com/budgets/${id}/spending`, { amount })
+  getAll: () => apiClient.get('/budgets'),
+  create: (budget) => apiClient.post('/budgets', budget),
+  update: (id, budget) => apiClient.put(`/budgets/${id}`, budget),
+  delete: (id) => apiClient.delete(`/budgets/${id}`),
+  updateSpending: (id, amount) => apiClient.patch(`/budgets/${id}/spending`, { amount })
 };
 
 // Transaction API calls
 export const transactionAPI = {
-  getAll: () => apiClient.get('https://financewebbackend.onrender.com/transactions'),
-  create: (transaction) => apiClient.post('https://financewebbackend.onrender.com/transactions', transaction),
-  update: (id, transaction) => apiClient.put(`https://financewebbackend.onrender.com/transactions/${id}`, transaction),
-  delete: (id) => apiClient.delete(`https://financewebbackend.onrender.com/transactions/${id}`)
+  getAll: () => apiClient.get('/transactions'),
+  create: (transaction) => apiClient.post('/transactions', transaction),
+  update: (id, transaction) => apiClient.put(`/transactions/${id}`, transaction),
+  delete: (id) => apiClient.delete(`/transactions/${id}`)
 };
 
 // Todo API calls
 export const todoAPI = {
-  getAll: () => apiClient.get('https://financewebbackend.onrender.com/todos'),
-  create: (todo) => apiClient.post('https://financewebbackend.onrender.com/todos', todo),
-  update: (id, todo) => apiClient.put(`https://financewebbackend.onrender.com/todos/${id}`, todo),
-  delete: (id) => apiClient.delete(`https://financewebbackend.onrender.com/todos/${id}`),
-  toggle: (id) => apiClient.patch(`https://financewebbackend.onrender.com/todos/${id}/toggle`)
+  getAll: () => apiClient.get('/todos'),
+  create: (todo) => apiClient.post('/todos', todo),
+  update: (id, todo) => apiClient.put(`/todos/${id}`, todo),
+  delete: (id) => apiClient.delete(`/todos/${id}`),
+  toggle: (id) => apiClient.patch(`/todos/${id}/toggle`)
 };
 
 // Financial Goals API calls
 export const goalAPI = {
-  getAll: () => apiClient.get('https://financewebbackend.onrender.com/goals'),
-  create: (goal) => apiClient.post('https://financewebbackend.onrender.com/goals', goal),
-  update: (id, goal) => apiClient.put(`https://financewebbackend.onrender.com/goals/${id}`, goal),
-  delete: (id) => apiClient.delete(`https://financewebbackend.onrender.com/goals/${id}`)
+  getAll: () => apiClient.get('/goals'),
+  create: (goal) => apiClient.post('/goals', goal),
+  update: (id, goal) => apiClient.put(`/goals/${id}`, goal),
+  delete: (id) => apiClient.delete(`/goals/${id}`)
 };
 
-export const getCurrentUser = () => userClient.get('https://financewebbackend.onrender.com/user/me');
-export const updateUser = (userData) => userClient.put('https://financewebbackend.onrender.com/user/me', userData);
+export const getCurrentUser = () => userClient.get('/user/me');
+export const updateUser = (userData) => userClient.put('/user/me', userData);
