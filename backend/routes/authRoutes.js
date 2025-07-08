@@ -8,8 +8,6 @@ router.use((req, res, next) => {
   next();
 });
 
-router.route('/:');
-
 router.post('/signup', registerUser);
 router.post('/login', loginUser);
 router.post('/forgot-password', forgotPassword);
