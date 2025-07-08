@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { signup } from "../../api/authApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Button from "../../ui/Button";
 import { ArrowLeftIcon } from "lucide-react";
 import Invalidation from "../../ui/Notifier";
@@ -113,7 +113,7 @@ function Signup()
                     </>)}
         </Button>
         </form>
-        <p>Already have an account? <a href="/login">Login</a></p>
+        <p>Already have an account? <Link to="/login">Login</Link></p>
     </div>
 ); }
 

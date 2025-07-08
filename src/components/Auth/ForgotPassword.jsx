@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { forgotPassword } from "../../api/authApi";
 
 function ForgotPassword() 
@@ -35,7 +36,7 @@ function ForgotPassword()
                 {loading ? 'Sending...': 'Send Reset Link'}
             </button>
         </form>
-        <p><a href="/login">Back to login</a></p>
+        <p><Link to="/login">Back to login</Link></p>
     </div>
 ); }
 
