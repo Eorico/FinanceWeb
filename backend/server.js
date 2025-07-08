@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import { Path } from 'ogl';
 
 dotenv.config();
 
@@ -22,10 +23,15 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 // Routes
+app.use(express.static('dist'));
 app.use('/api/auth', authRoutes);
 app.use('/api/auth', userRoutes);
 
 // Basic route
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
+})
+
 app.get('/', (req, res) => {
   res.json({ message: 'Finance App API Running' });
 });
