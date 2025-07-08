@@ -108,8 +108,10 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
           onClick={handleLogout}
           title={isCollapsed ? 'Logout' : ''}
         >
-          <LogOut size={20} />
-          {!isCollapsed && <span>Logout</span>}
+          <Link>
+            <LogOut size={20} />
+            {!isCollapsed && <span>Logout</span>}
+          </Link>
         </button>
       </div>
     </aside>
