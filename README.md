@@ -9,4 +9,4 @@ Features:
 
 https://financeweb.onrender.com
 
-![Demo](https://eorico.github.io/PortFolioEo/DemoFinance.gif)
+![Demo](https://github.com/Eorico/Pofeo/blob/main/public/assets/Showcase.png)
